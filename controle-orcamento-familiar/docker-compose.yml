@@ -1,26 +1,47 @@
-
 version: '3.9'
 
 services:
- dockerdb:
-   image: mysql:8.0.30
-   restart: always
-   environment:
-     - MYSQL_ROOT_PASSWORD=123
-     - MYSQL_DATABASE=challenge4
-     - MYSQL_PASSWORD=123
-     - MYSQL_USER=sa
-   ports:
-     - 3307:3306
-
-# Criar a imagem rafael/api primeiro, docker build -t rafael/api .
-
- spring-app:
-    image: rafael/api:latest
-    ports:
-      - 8080:8080
+  dockerdb:
+    image: mysql:8.0.30
+    container_name: family-budget-mysql
+    restart: always
     environment:
-      - "SPRING_PROFILES_ACTIVE=prod"   
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: challenge4
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: 123
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  spring-app:
+    build: .
+    container_name: family-budget-api
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://dockerdb:3306/challenge4
+      SPRING_DATASOURCE_USERNAME: sa
+      SPRING_DATASOURCE_PASSWORD: 123
     depends_on:
-      - dockerdb
-       
+      dockerdb:
+        condition: service_healthy
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+

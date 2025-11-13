@@ -1,5 +1,13 @@
-FROM openjdk:17-oracle
+# Estágio 1: Compilação
+FROM maven:3.8-openjdk-17 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-COPY target/Controle-Familiar.jar Controle-Familiar.jar
-
-ENTRYPOINT ["java","-Xmx512m","-jar","/Controle-Familiar.jar"]
+# Estágio 2: Runtime (imagem final)
+FROM eclipse-temurin:17-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]

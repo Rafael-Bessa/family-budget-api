@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/controle-orcamento-familiar/controle-orcamento-familiar.iml" filepath="$PROJECT_DIR$/controle-orcamento-familiar/controle-orcamento-familiar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/family-budget-api.iml" filepath="$PROJECT_DIR$/.idea/family-budget-api.iml" />
+    </modules>
+  </component>
+</project>
