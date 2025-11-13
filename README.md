@@ -144,7 +144,7 @@ Antes de começar, certifique-se de ter instalado:
   - [Maven 3.8+](https://maven.apache.org/download.cgi)
   - [MySQL 8.0.30](https://dev.mysql.com/downloads/mysql/)
 
-### Opção 1: Usando Docker Compose (Recomendado) 🐳
+###  Usando Docker Compose  🐳
 
 # Clone o repositório
 ```bash
